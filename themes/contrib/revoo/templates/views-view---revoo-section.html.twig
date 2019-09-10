@@ -1,0 +1,20 @@
+
+<div class="container">
+  <div class="row">
+    <header class="col-md-8 col-md-offset-2">
+      {% if header %}
+      {{ header }}
+      {% endif %}
+    </header>
+  </div>
+</div>
+
+<div class="section-content">
+  <div class="container">
+    <div class="row row-columns">
+     {% for row in rows %}
+     {{ rows }}
+     {% endfor %}
+    </div>
+  </div>
+</div>

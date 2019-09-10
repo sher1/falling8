@@ -1,0 +1,15 @@
+{% include theme_path ~ "/templates/header.html.twig" %}
+<main id="home" class="main">
+	{% if page.slider %}
+		{{ page.slider }}
+	{% endif %}
+</main>
+	<div class="content">
+		{% if page.section %}
+			{{ page.section }}
+		{% endif %}
+		{% if page.section_bottom %}
+			{{ page.section_bottom }}
+		{% endif %}
+	</div>
+{% include theme_path ~ "/templates/footer.html.twig" %}

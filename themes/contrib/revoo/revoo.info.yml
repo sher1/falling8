@@ -1,0 +1,35 @@
+name: Revoo
+type: theme
+description: 'Best theme for blogger'
+core: 8.x
+screenshot: screenshot.png
+libraries:
+  - revoo/revoo-lib
+stylesheets-remove:
+  - core/themes/stable/css/views/views.module.css
+  - core/themes/stable/css/system/components/align.module.css
+  - core/assets/vendor/normalize-css/normalize.css
+  - core/modules/system/css/system.module.css
+  - core/modules/system/css/system.theme.css
+  - core/modules/views/css/views.module.css
+  - core/assets/vendor/ckeditor/skins/moono/editor.css
+regions:
+  header_logo: 'Header Logo'
+  search: 'Header search'
+  header: 'Header'
+  main_menu: 'Main menu'
+  slider: 'Slider'
+  content_top: 'Content Top'
+  content_left: 'Content Left'
+  content_right: 'Content Right'
+  content: 'Main content'
+  content_bottom: 'Content Bottom'
+  content_social: 'Content Social'
+  sidebar: 'Sidebar'
+  section: 'Section content'
+  section_bottom: 'Section Bottom'
+  footer_column_1: 'Footer column 1'
+  footer_column_2: 'Footer column 2'
+  footer_column_3: 'Footer column 3'
+  footer_column_4: 'Footer column 4'
+  footer_column_5: 'Footer column 5'

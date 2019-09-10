@@ -1,0 +1,24 @@
+{% set img_bkg = file_url(node.field_image_background.0.entity.uri.value) %}
+{% set style_page = node.field_style_page.0.value %}
+{% include theme_path ~ "/templates/header.html.twig" %}
+
+	<main id="home" class="main masked parallax" data-stellar-background-ratio="0.7" {% if node.field_image_background.0.entity.uri.value %}{{ 'style=background-image:url(' ~ img_bkg ~ ')' }}{% endif %} >
+	    <div class="opener">
+	      <div class="container">
+	        <div class="row">
+	          <h1>{{ title }}</h1>
+	          <h2>{{ node.field_sub_title.value }}</h2>
+	        </div>
+	      </div>
+	    </div>
+ 	</main>
+ 	<div class="section">
+	 	{% if page.content %}
+		    {{ page.content }}
+		{% endif %}
+	 	{% if page.section %}
+		    {{ page.section }}
+		{% endif %}
+	</div>
+
+{% include theme_path ~ "/templates/footer.html.twig" %}

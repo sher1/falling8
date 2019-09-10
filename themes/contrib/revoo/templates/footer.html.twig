@@ -1,0 +1,37 @@
+<footer id="footer" class="footer text-white">
+  <div class="footer-top">
+    <div class="container">
+      <div class="row row-columns">
+        <div class="column col-sm-6 col-md-4">
+        {% if page.footer_column_1 %}
+        {{ page.footer_column_1 }}
+        {% endif %}
+        </div>
+        <div class="column col-sm-6 col-md-2">
+          <div class="widget widget-links">
+            {% if page.footer_column_2 %}
+            {{ page.footer_column_2 }}
+            {% endif %}
+          </div>
+        </div>
+        <div class="column col-sm-6 col-md-3">
+          {% if page.footer_column_3 %}
+            {{ page.footer_column_3 }}
+          {% endif %}
+        </div>
+        <div class="column col-sm-6 col-md-3">
+          {% if page.footer_column_4 %}
+            {{ page.footer_column_4 }}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      {% if page.footer_column_5 %}
+        {{ page.footer_column_5 }}
+      {% endif %}
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,206 @@
+<?php
+use Drupal\file\Entity\File;
+use Drupal\image\Entity\ImageStyle;
+function revoo_css_alter(&$css) {
+  $theme_path = drupal_get_path('theme', 'revoo');
+  // Add googlefonts.
+  $googlefonts = '//fonts.googleapis.com/css?family=Hind:400,500,600,700';
+  $css[$googlefonts] = array(
+  'data' => $googlefonts,
+  'type' => 'external',
+  'every_page' => TRUE,
+  'media' => 'all',
+  'preprocess' => FALSE,
+  'group' => CSS_AGGREGATE_THEME,
+  'browsers' => array('IE' => TRUE, '!IE' => TRUE),
+  'weight' => -1,
+  );
+}
+function revoo_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+	if ($node = \Drupal::routeMatch()->getParameter('node')) {
+		$suggestions[] = 'page__node__' . $node->getType();
+	}
+}
+function revoo_preprocess_block(&$variables) {
+global $base_url;
+    switch ($variables['base_plugin_id']) {
+    case 'system_branding_block':
+    $variables['site_logo'] = '';
+    if ($variables['content']['site_logo']['#access'] && $variables['content']['site_logo']['#uri']) {
+    $variables['site_logo'] = str_replace('.svg', '.png', $variables['content']['site_logo']['#uri']);
+    }
+    break;
+    }
+    if(isset($variables['elements']['#id']) && !empty($variables['elements']['#id'])){
+        $block_id = $variables['elements']['#id'];
+        $block = \Drupal\block\Entity\Block::load($block_id);
+        if($block->getRegion()){
+            $region = $block->getRegion();
+            $variables['region'] = $region;
+        }
+    //config as context module
+    }else{
+        $variables['region'] = $variables['elements']['#configuration']['region'];
+    }
+}
+
+function revoo_preprocess_node(&$vars) {
+	$current_path = \Drupal::request()->getRequestUri();
+    global $base_root;
+    $vars['base_root'] = $base_root;
+
+
+	$site_name = \Drupal::config('system.site')->get('name');
+	$vars['site_name'] = $site_name;	$request = \Drupal::request();
+	if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+		$vars['title'] = \Drupal::service('title_resolver')->getTitle($request, $route);
+	}
+
+	
+    if (isset($vars['node']->field_image_blog) && !empty($vars['node']->field_image_blog)) {
+        foreach ( $node_value=$vars['node']->field_image_blog->getValue() as $k => $v) {
+         
+            $fid = $node_value[$k]['target_id'];
+            $file = File::load($fid);
+       		$image_uri = ImageStyle::load('image_360x360')->buildUrl($file->getFileUri());
+          $image_uri2 = ImageStyle::load('image_750x340')->buildUrl($file->getFileUri());
+            
+          	 $vars['img_uri_360_360'][$k] = $image_uri;
+             $vars['img_uri_750_340'] = $image_uri2;
+        }
+    } else {
+       
+         $vars['img_uri_360_360'][0] = '';
+         $vars['img_uri_750_340'] = '';
+          
+    }
+
+	$pageURL = 'http';	
+ 	if(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'){
+ 		$pageURL .= "s";
+ 	}
+	$pageURL .= '://';
+ 	if($_SERVER['SERVER_PORT'] != '80'){
+  	$pageURL .= $_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
+ 	}else{
+  		$pageURL .= $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+ 	}
+ 	$vars['pageURL'] = $pageURL;
+ 	if($node = \Drupal::routeMatch()->getParameter('node')){
+ 		$vars['created'] = format_date($node->getCreatedTime(), "custom", "F d, Y");
+ 
+ 	}
+ 	//get current term (tid)
+	if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical') {
+	  	$term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term');
+	  	$term = taxonomy_term_load($term_id);
+	  	//$term_name = $term_object->get('name')->value;
+		$vars['current_term'] = $term;
+	}
+
+	 $nid = $vars['node']->nid->value;
+    $num_comment = db_query('SELECT comment_count FROM {comment_entity_statistics} WHERE entity_id = ' . $nid)->fetchAssoc();
+    $vars['comment_count'] = $num_comment['comment_count'];
+    
+
+}
+function revoo_preprocess_html(&$variables){
+  	$theme = \Drupal::theme()->getActiveTheme()->getName();
+	$variables['attributes']['class'][] = 'ltr';
+  	$variables['general_setting_tracking_code'] = theme_get_setting('general_setting_tracking_code', $theme);
+  	$variables['custom_css'] = theme_get_setting('custom_css', $theme);
+}
+function revoo_preprocess_field(&$variables){
+	// if ($node = \Drupal::routeMatch()->getParameter('node')) {
+	// 	$ntype = $node->getType();
+ //  		if($ntype == 'blog_post'){
+ //  			$format = $node->field_style_single	[0]->value;
+ //  			$variables['style_single'] = $format;
+
+ //  		}
+	// }
+}
+/**
+ * Implements template_preprocess_page().
+ */
+function revoo_preprocess_page(&$variables) {
+
+   global $base_root;
+	$theme = \Drupal::theme()->getActiveTheme()->getName();
+	$variables['theme_path'] = drupal_get_path('theme', $theme);
+	 $variables['base_path'] = base_path();
+
+	$variables['site_name'] = \Drupal::config('system.site')->get('name');
+
+ global $base_url;
+    if (!empty(theme_get_setting('image_blog_file', 'revoo'))) {
+        $variables['blog_background'] = $base_url . theme_get_setting('image_blog_file', 'revoo');
+    } else {
+        $variables['blog_background'] = '';
+    }
+
+    if (!empty(theme_get_setting('image_page_file', 'revoo'))) {
+        $variables['page_background'] = $base_url . theme_get_setting('image_page_file', 'revoo');
+    } else {
+        $variables['page_background'] = '';
+    }
+
+    if (!empty(theme_get_setting('image_portfolio_file', 'revoo'))) {
+        $variables['portfolio_background'] = $base_url . theme_get_setting('image_portfolio_file', 'revoo');
+    } else {
+        $variables['portfolio_background'] = '';
+    }
+
+    $variables['style'] = theme_get_setting('style', $theme);
+
+   $variables['logo'] = $base_url . theme_get_setting('logo_file', $theme);
+
+   $variables['text'] = theme_get_setting('logo_text', $theme);
+
+
+	$request = \Drupal::request();
+	if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+		$variables['title'] = \Drupal::service('title_resolver')->getTitle($request, $route);
+	}
+	//create link taxonomy term starts
+	//use custom code
+	// if ($node = \Drupal::routeMatch()->getParameter('node')) {
+	// 	if($node->type->target_id == 'article'){
+	// 		$build_cate = $node->field_blog_categories->view('view_mode');
+	// 		$cate = \Drupal::service('renderer')->renderRoot($build_cate);
+	// 		$variables['link_categories'] = $cate;
+	// 		$build_tags = $node->field_tags->view('view_mode');
+	// 		$tags = \Drupal::service('renderer')->renderRoot($build_tags);
+	// 		$variables['link_tags'] = $tags;
+	// 		$build_video = $node->field_video_embed->view('view_mode');
+	// 		$video_embed = \Drupal::service('renderer')->renderRoot($build_video);
+	// 		$variables['video_embed'] = $video_embed;
+	// 		$build_image = $node->field_image->view('view_mode');
+	// 		$gallery = \Drupal::service('renderer')->renderRoot($build_image);
+	// 		$variables['gallery_images'] = $gallery;
+	// 	}else{
+	// 		$variables['node'] = $node;
+	// 	}
+	// }
+	//get current term (tid)
+	if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical') {
+	  	$term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term');
+	  	$term = taxonomy_term_load($term_id);
+	  	//$term_name = $term_object->get('name')->value;
+		$variables['current_term'] = $term;
+	}
+}
+	
+function revoo_form_search_block_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    unset($form['search_block_form']['#title']); // remove label form
+    $form['actions']['submit']['#value'] = t(''); // Change the text on the submit button
+    
+}
+function revoo_preprocess_container(&$variables){
+	$variables['container_type'] = $variables['element']['#type'];
+}
+function revoo_preprocess_views_view(&$variables){
+	$theme = \Drupal::theme()->getActiveTheme()->getName();
+  	
+  	$variables['blog_style'] = theme_get_setting('blog_style', $theme);
+}

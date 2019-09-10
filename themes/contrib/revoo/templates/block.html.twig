@@ -1,0 +1,53 @@
+
+{% if region == 'footer_column_1' or region == 'footer_column_2' or region == 'footer_column_3' or region == 'footer_column_4' %}
+<div{{ attributes }}>
+  {{ title_prefix }}
+  {% if label %}
+    <h5 class="widget-title">{{ label }}</h5>
+  {% endif %}
+  {{ title_suffix }}
+  {% if content %}
+    {{ content }}
+  {% endif %}
+</div>
+{% elseif region == 'section' %}
+<section{{ attributes }}>
+  {{ title_prefix }}
+  {% if label %}
+    <h2 {{ title_attributes }}>{{ label }}</h2>
+  {% endif %}
+  {{ title_suffix }}
+  {% if content %}
+    {{ content }}
+  {% endif %}
+</section>
+{% elseif region == 'section_bottom' %}
+<section{{ attributes }}>
+  {{ title_prefix }}
+  {% if label %}
+    <h2 class="section-title" >{{ label }}</h2>
+    <div class="spacer spacer-primary">
+      <div class="line">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+  {% endif %}
+  {{ title_suffix }}
+  {% if content %}
+    {{ content }}
+  {% endif %}
+</section>
+{% else %}
+<div{{ attributes }}>
+  {{ title_prefix }}
+  {% if label %}
+    <h3{{ title_attributes }}>{{ label }}</h3>
+  {% endif %}
+  {{ title_suffix }}
+  {% if content %}
+    {{ content }}
+  {% endif %}
+</div>
+{% endif %}

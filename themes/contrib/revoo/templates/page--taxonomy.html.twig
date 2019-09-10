@@ -1,0 +1,22 @@
+{% include theme_path ~ "/templates/header.html.twig" %}
+<main id="home" class="main masked main-blog parallax" data-stellar-background-ratio="0.7">
+    <div class="opener">
+      <div class="container">
+        <div class="row">
+          <h2>{{ title }}</h2>
+        </div>
+      </div>
+    </div>
+</main>
+<div class="content">
+	<section id="blog" class="blog text-center section">
+      <div class="container">
+        <div class="row row-columns">
+            {% if page.content %}
+            {{ page.content }}
+            {% endif %}                    
+        </div>
+      </div>
+    </section>   
+</div>
+{% include theme_path ~ "/templates/footer.html.twig" %}

@@ -1,0 +1,12 @@
+<div class="container">
+  {% if header %}
+  {{ header }}
+  {% endif %}
+</div>
+<div class="section-content">
+  <div class="col-3 isotope isotope-padding js-gallery">
+    {% for row in rows %}  
+    {{ rows }}
+    {% endfor %}
+  </div>
+</div>

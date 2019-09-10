@@ -1,0 +1,88 @@
+{% set blog_format = node.field_blog_format.0.value %}
+{% set img_alt = node.field_image_blog.0.alt %}
+{% set img = file_url(node.field_image_blog.0.entity.uri.value) %}
+{% if not page %}
+    <div class="column col-sm-6 col-md-4">
+        <div class="blog-article">
+            <div class="blog-article-thumbnail">
+                {% if blog_format == 'style2' %}
+                  <div class="gallery-carousel carousel">
+                    {% for img in img_uri_360_360 %}
+                      <div class="gallery-item">
+                        <img  alt="{{ img_alt }}" src="{{ img }}">
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                    {% if blog_format == 'style1' %}
+                       <img  alt="{{ img_alt }}" src="{{ img }}">    
+                    {% endif %} 
+                {% endif %}
+            
+                <div class="date">{{ node.created.value|date('d') }}<br>{{ node.created.value|date('M') }}</div>
+            </div>
+            <div class="blog-article-details">
+              <h3 class="blog-article-title">{{ node.getTitle()|t }}</h3>
+              <h4 class="blog-article-category">{{ content.field_categories_blog }}</h4>
+              <a  href="{{ url }}" class="read-more">{{ 'Read More'|t }}<i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <article class="post">
+        <div class="blog-article-thumbnail">
+            {% if blog_format == 'style2' %}
+                  <div class="gallery-carousel carousel">
+                    {% for img in img_uri_360_360 %}
+                      <div class="gallery-item class_image ">
+                        <img  alt="{{ img_alt }}" src="{{ img }}">
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                    {% if blog_format == 'style1' %}
+                       <img  alt="{{ img_alt }}" src="{{ img_uri_750_340 }}">    
+                    {% endif %} 
+                {% endif %}
+              <div class="date">{{ node.created.value|date('d') }}<br>{{ node.created.value|date(' m ') }}</div>
+        </div>
+    <header class="post-header">
+        <h2>{{ node.getTitle()|t }}</h2>
+    </header>
+    <ul class="post-meta">
+        <li>{{ node.created.value|date('d m Y') }}</li>
+        <li>{{ 'Posted by'|t}} {{ author_name }}</li>
+        <li>{{ content.field_categories_blog }}</li>
+    </ul>
+    <div class="post-entry">
+       {{ content.body }}
+    </div>
+    <div class="post-tags">
+        {{ content.field_blog_tags }}
+    </div>
+    <div class="post-controls">
+        <div class="post-share">
+          <ul>
+            <li>
+              {{'Share:'|t}}
+            </li>
+            <li>
+              <a target="_blank" href="http://www.facebook.com/sharer.php?u={{ pageURL }}"><i class="fa fa-facebook"></i></a>
+            </li>
+            <li>
+              <a target="_blank" href="https://twitter.com/intent/tweet?original_referer={{ pageURL }}&amp;text={{ title }}&amp;tw_p=tweetbutton&amp;url={{ pageURL }}"><i class="fa fa-twitter"></i></a>
+            </li>
+            <li>
+              <a target="_blank" href="https://plusone.google.com/_/+1/confirm?hl=en-US&amp;url={{ pageURL }}"><i class="fa fa-google-plus"></i></a>
+            </li>
+          </ul>
+        </div>
+        <div class="comments-info">
+          
+          <i class="fa fa-comment"></i> {{ comment_count}}
+        </div>
+    </div>
+</article> 
+{{ content.field_blog_comments }}    
+
+{% endif %}

@@ -1,0 +1,58 @@
+{% set img_bkg = file_url(node.field_background_contact.0.entity.uri.value) %}
+{% set style_contact = node.field_style_contact.0.value %}
+{% include theme_path ~ "/templates/header.html.twig" %}
+{% if style_contact == "style1" %}
+	<main id="home" class="main masked parallax" data-stellar-background-ratio="0.7" {% if node.field_background_contact.0.entity.uri.value %}{{ 'style=background-image:url(' ~ img_bkg ~ ')' }}{% endif %} >
+	    <div class="opener">
+	      <div class="container">
+	        <div class="row">
+	          <h1>{{ title }}</h1>
+	          <h2>{{ node.field_sub_title.value }}</h2>
+	        </div>
+	      </div>
+	    </div>
+  	</main>
+  	<div class="content">
+		<section id="contact" class="section">
+		      <div class="container">
+		        {% if page.content_top %}
+		        {{ page.content_top }}
+		        {% endif %}
+		      </div>
+		      	{% if page.content_bottom %}
+		        {{ page.content_bottom }}
+		        {% endif %}
+	    </section>
+	</div>
+{% elseif style_contact == "style2" %}
+	<main id="home" class="main masked parallax" data-stellar-background-ratio="0.7" {% if node.field_background_contact.0.entity.uri.value %}{{ 'style=background-image:url(' ~ img_bkg ~ ')' }}{% endif %} >
+	    <div class="opener">
+	      <div class="container">
+	        <div class="row">
+	            <h1>{{ title }}</h1>
+		        <h2>{{ node.field_sub_title.value }}</h2>
+	        </div>
+	      </div>
+	    </div>
+  	</main>
+  	<div class="content">
+		<section id="contact" class="contact-2 section">
+	        <div class="container">
+	            <div class="row row-columns">
+		            {% if page.content_right %}
+			        {{ page.content_right }}
+			        {% endif %}
+		            <div class="column col-md-8 col-md-pull-4">
+			            {% if page.content_left %}
+				        {{ page.content_left }}
+				        {% endif %}
+		            </div>
+	          	</div>
+	        </div>
+	      	{% if page.content_bottom %}
+		    {{ page.content_bottom }}
+		    {% endif %}
+	    </section>
+	</div>
+{% endif %}
+{% include theme_path ~ "/templates/footer.html.twig" %}

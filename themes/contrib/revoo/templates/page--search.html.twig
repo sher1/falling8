@@ -1,0 +1,19 @@
+{% include theme_path ~ "/templates/header.html.twig" %}
+
+	<main id="home" class="main masked parallax" data-stellar-background-ratio="0.7" {% if page_background %}{{ 'style=background-image:url(' ~ page_background ~ ')' }}{% endif %} >
+	    <div class="opener">
+	      <div class="container">
+	        <div class="row">
+	          <h1>{{ title }}</h1>
+	          <h2>{{ node.field_sub_title.value }}</h2>
+	        </div>
+	      </div>
+	    </div>
+ 	</main>
+ 	<div class="section container ">
+	 	{% if page.content %}
+		    {{ page.content }}
+		{% endif %}
+	</div>
+
+{% include theme_path ~ "/templates/footer.html.twig" %}

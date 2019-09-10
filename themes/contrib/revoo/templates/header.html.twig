@@ -1,0 +1,28 @@
+<header id="top" class="navbar js-navbar-affix">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">{{ 'Toggle navigation'|t }}</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      {% if style == 'image' %}
+      <div class = "class_logos">
+          <a href="{{ path('<front>') }}" class="brand js-target-scroll">
+            <img alt="{{ site_name }}" src="{{ logo }}">
+          </a>
+      </div>
+      {% elseif style == 'text' %}
+        <a href="{{ path('<front>') }}" class="brand js-target-scroll">
+          <span class="text-primary">{{ text }}</span>
+        </a>
+      {% endif %}
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse"> 
+      {% if page.main_menu %}
+          {{ page.main_menu }}
+      {% endif %}
+    </div>
+  </div>
+</header>

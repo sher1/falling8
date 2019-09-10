@@ -1,0 +1,8 @@
+<div id="respond" class="comment-respond">
+    <h2 id="reply-title" class="comment-reply-title">{{ 'Post a comment'|t}}</h2>
+    {% if comment_form %}
+        {{ comment_form }}
+    {% endif %}
+</div>
+<h2  class="comment-reply-title">{{ 'comment'|t}}</h2>
+{{ comments }}

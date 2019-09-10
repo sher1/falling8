@@ -1,0 +1,27 @@
+revoo-lib:
+  version: VERSION
+  css:
+    theme:
+      css/style.css: {}
+      css/update.css: {}
+  js:
+    js/bootstrap.min.js: {}
+    js/jquery.viewport.js: {}
+    js/smoothscroll.js: {}
+    js/jquery.validate.min.js: {}
+    js/jquery.ajaxchimp.min.js: {}
+    js/jQuerySimpleCounter.js: {}
+    js/wow.min.js: {}
+    js/jquery.stellar.min.js: {}
+    js/jquery.magnific-popup.js: {}
+    js/owl.carousel.min.js: {}
+    js/imagesloaded.pkgd.js: {}
+    js/isotope.pkgd.min.js: {}
+    js/interface.js: {}
+    js/slider/jquery.themepunch.tools.min.js: {}
+    js/slider/jquery.themepunch.revolution.min.js: {}
+    https://maps.googleapis.com/maps/api/js?v=3.exp.js: {}
+    js/gmap.js: {}
+    js/update.js: {}
+  dependencies:
+    - core/jquery
