@@ -7,3 +7,5 @@ files/
 sites/*/files
 sites/*/private
 sites/*/translations
+# Ignore files that aren't needed for use
+core/yarn.lock
